@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do Dashboard</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="src/styles.css">
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col">
+    <header class="bg-blue-600 text-white p-4">
+        <h1 class="text-2xl font-bold">To-Do Dashboard</h1>
+    </header>
+    <main class="container mx-auto p-4 flex-1">
+        <!-- Most Important Task -->
+        <section id="most-important" class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">Most Important Task</h2>
+            <div id="most-important-task" class="bg-white p-4 rounded-lg shadow-md"></div>
+        </section>
+
+        <!-- Add Task Form -->
+        <section id="add-task" class="mb-8">
+            <h2 class="text-xl font-semibold mb-4">Add New Task</h2>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <input type="text" id="task-name" placeholder="Task Name" class="p-2 border rounded">
+                    <input type="datetime-local" id="deadline" class="p-2 border rounded">
+                    <input type="text" id="estimation" placeholder="Estimation (e.g., 120 mins)" class="p-2 border rounded">
+                    <input type="text" id="description" placeholder="Description" class="p-2 border rounded">
+                    <select id="status" class="p-2 border rounded">
+                        <option value="Not Started">Not Started</option>
+                        <option value="In Progress">In Progress</option>
+                        <option value="Completed">Completed</option>
+                    </select>
+                    <div id="priority-suggestion" class="text-gray-600"></div>
+                </div>
+                <div class="mt-4">
+                    <label class="mr-2">Priority:</label>
+                    <select id="importance" class="p-2 border rounded">
+                        <option value="High">High</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Low">Low</option>
+                    </select>
+                    <button id="use-suggested" class="ml-2 bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Use Suggested</button>
+                </div>
+                <button id="add-task-btn" class="mt-4 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">Add Task</button>
+            </div>
+        </section>
+
+        <!-- All Tasks -->
+        <section id="all-tasks">
+            <h2 class="text-xl font-semibold mb-4">All Tasks</h2>
+            <div id="task-list" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
+        </section>
+    </main>
+    <footer class="bg-gray-200 p-4 text-center">
+        <button id="save-exit" class="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">Save and Exit</button>
+    </footer>
+    <script src="src/main.js"></script>
+</body>
+</html>
