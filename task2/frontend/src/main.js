@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch and display all tasks
     function fetchTasks() {
-        fetch('http://localhost:8000/api/tasks')
+        fetch('https://internship-ai-agents.onrender.com/api/tasks')
             .then(response => response.json())
             .then(tasks => {
                 taskList.innerHTML = '';
@@ -36,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fetch and display most important task
     function fetchMostImportant() {
-        fetch('http://localhost:8000/api/most_important')
+        fetch('https://internship-ai-agents.onrender.com/api/most_important')
             .then(response => {
                 if (response.ok) return response.json();
                 throw new Error('No tasks');
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 dateCreated: new Date().toISOString()
             };
 
-            fetch('http://localhost:8000/api/predict_priority', {
+            fetch('https://internship-ai-agents.onrender.com/api/predict_priority', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(taskData)
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
             status: statusSelect.value || null,
             importance: importanceSelect.value || null
         };
-        const response = await fetch('http://localhost:8000/api/add_task', {
+        const response = await fetch('https://internship-ai-agents.onrender.com/api/add_task', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(taskData)
@@ -140,7 +140,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Save and exit
     saveExitBtn.addEventListener('click', () => {
-        fetch('http://localhost:8000/api/save', {
+        fetch('https://internship-ai-agents.onrender.com/api/save', {
             method: 'POST'
         })
         .then(response => response.json())
