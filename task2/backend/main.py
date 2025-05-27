@@ -34,43 +34,55 @@ def rebuild_heap():
 
 rebuild_heap()
 
-# Pydantic model
+# Pydantic model for task 
 class Task(BaseModel):
     taskName: str
-    deadline: str
-    estimation: Optional[float] = None
-    description: Optional[str] = None
-    status: Optional[str] = None
-    importance: Optional[str] = None
+    deadline: str 
+    estimation: Optional[float] = None 
+    description: Optional[str] = None 
+    status: Optional[str] = None 
+    importance: Optional[str] = None 
 
+# need to write same thing for input that needs to be predicted
 class PredictInput(BaseModel):
-    deadline: str
-    dateCreated: str
-    estimation: Optional[float] = None
+    deadline: str 
+    dateCreated: str 
+    estimation: Optional[float] = None 
 
-# Routes
+# writing routes (APIs)
+# this is for all tasks
 @app.get("/api/tasks")
 def get_all_tasks():
     sorted_heap = sorted(task_heap)
     tasks = [task for _, _, task in sorted_heap]
     return tasks
 
+# getting the most important one to show the user their next task
+# most important is always in the first slot in the heap
 @app.get("/api/most_important")
-def get_most_important():
+def get_most_impotant():
     if task_heap:
-        _, _, task = task_heap[0]
-        return task
-    return {"message": "No tasks in your list."}
+        return task_heap[0][2]
 
-@app.post("/api/tasks")
-def add_task(task: Task):
-    global data
+    return {
+        "message": "No tasks in your list."
+    }
+
+# adding a task 
+@app.post("/api/add_task")
+async def add_task(task: Task):
+    # we are doing to use our global data pandas file 
+    global data 
     deadline = pd.to_datetime(task.deadline)
-    created_at = datetime.now()
+    created_at = datetime.now() 
 
-    # Predict priority if not provided
-    predicted_importance = predict_priority(deadline, created_at, task.estimation)
-    importance = task.importance or predicted_importance
+    # if the user forgot to provide any priority our AI model will predict and we will use that
+    predicted_priority_from_AI = predict_priority(deadline, created_at, task.estimation)
+
+    if task.importance: 
+        importance = task.importance
+    else:
+        importance = predicted_priority_from_AI
 
     new_task = {
         "Task Name": task.taskName,
@@ -101,6 +113,6 @@ def predict_task_priority(input1: PredictInput):
 
 
 @app.post("/api/save")
-def save_and_exit():
+def save():
     data.to_csv("dataset/sample_task_dataset.csv", index=False)
     return {"message": "Tasks saved successfully!"}
