@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Add task
-    addTaskBtn.addEventListener('click', () => {
+    addTaskBtn.addEventListener('click', async () => {
         const estimation = estimationInput.value ? parseFloat(estimationInput.value) : null;
         const taskData = {
             taskName: taskNameInput.value,
@@ -105,29 +105,29 @@ document.addEventListener('DOMContentLoaded', () => {
             status: statusSelect.value || null,
             importance: importanceSelect.value || null
         };
-        fetch('http://localhost:8000/api/tasks', {
+        const response = await fetch('http://localhost:8000/api/add_task', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(taskData)
         })
-        .then(response => {
-            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
-            return response.json();
-        })
-        .then(data => {
-            alert(data.message);
-            fetchTasks();
-            fetchMostImportant();
-            taskNameInput.value = '';
-            deadlineInput.value = '';
-            estimationInput.value = '';
-            descriptionInput.value = '';
-            statusSelect.value = 'Not Started';
-            importanceSelect.value = 'Medium';
-            prioritySuggestion.textContent = '';
-            useSuggestedBtn.style.display = 'none';
-        })
-        .catch(error => console.error('Error adding task:', error));
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        
+        const data = response.json();
+        alert(data.message);
+        fetchTasks();
+        fetchMostImportant();
+        taskNameInput.value = '';
+        deadlineInput.value = '';
+        estimationInput.value = '';
+        descriptionInput.value = '';
+        statusSelect.value = 'Not Started';
+        importanceSelect.value = 'Medium';
+        prioritySuggestion.textContent = '';
+        useSuggestedBtn.style.display = 'none';
+
     });
 
     // Use suggested priority
