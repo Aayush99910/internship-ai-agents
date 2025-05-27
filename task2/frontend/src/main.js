@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
             throw new Error(`HTTP error! Status: ${response.status}`);
         }
         
-        const data = response.json();
+        const data = await response.json();
         alert(data.message);
         fetchTasks();
         fetchMostImportant();
